@@ -32,6 +32,7 @@ namespace BitPackHeaders
 
         private DictionaryHeaders dictionary;
         private FieldHeaders fields;
+        private ArrayHeaders array;
         private PackedHeaders packed;
 
         private HeaderNames[] headersToLookup;
@@ -59,12 +60,14 @@ namespace BitPackHeaders
 
             this.dictionary = new DictionaryHeaders();
             this.fields = new FieldHeaders();
+            this.array = new ArrayHeaders();
             this.packed = new PackedHeaders();
             for (var i = 0; i < storedHeaders.Length; i++)
             {
                 (HeaderNames Header, string Value) val = storedHeaders[i];
                 dictionary.Set(val.Header, val.Value);
                 fields.Set(val.Header, val.Value);
+                array.Set(val.Header, val.Value);
                 packed.Set(val.Header, val.Value);
             }
 
@@ -415,6 +418,177 @@ namespace BitPackHeaders
                         case HeaderNames.Version: store[i] = fields.Version; break;
                         case HeaderNames.XDate: store[i] = fields.XDate; break;
                         default: store[i] = null; break;
+                    }
+                }
+            }
+
+            ArrayPool<string?>.Shared.Return(store);
+        }
+
+        [Benchmark]
+        public void Array()
+        {
+            string?[] store = ArrayPool<string?>.Shared.Rent(this.headersToLookup.Length);
+
+            for (int x = 0; x < GetKnownBenchmark.Iterations; x++)
+            {
+                for (int i = 0; i < headersToLookup.Length; i++)
+                {
+                    HeaderNames name = this.headersToLookup[i];
+                    switch (name)
+                    {
+                        case HeaderNames.AddResourcePropertiesToResponse: store[i] = array.AddResourcePropertiesToResponse; break;
+                        case HeaderNames.AllowTentativeWrites: store[i] = array.AllowTentativeWrites; break;
+                        case HeaderNames.Authorization: store[i] = array.Authorization; break;
+                        case HeaderNames.A_IM: store[i] = array.A_IM; break;
+                        case HeaderNames.BinaryId: store[i] = array.BinaryId; break;
+                        case HeaderNames.BinaryPassthroughRequest: store[i] = array.BinaryPassthroughRequest; break;
+                        case HeaderNames.BindReplicaDirective: store[i] = array.BindReplicaDirective; break;
+                        case HeaderNames.BuilderClientIdentifier: store[i] = array.BuilderClientIdentifier; break;
+                        case HeaderNames.CanCharge: store[i] = array.CanCharge; break;
+                        case HeaderNames.CanOfferReplaceComplete: store[i] = array.CanOfferReplaceComplete; break;
+                        case HeaderNames.CanThrottle: store[i] = array.CanThrottle; break;
+                        case HeaderNames.ChangeFeedStartFullFidelityIfNoneMatch: store[i] = array.ChangeFeedStartFullFidelityIfNoneMatch; break;
+                        case HeaderNames.ChangeFeedWireFormatVersion: store[i] = array.ChangeFeedWireFormatVersion; break;
+                        case HeaderNames.ClientRetryAttemptCount: store[i] = array.ClientRetryAttemptCount; break;
+                        case HeaderNames.CollectionChildResourceContentLimitInKB: store[i] = array.CollectionChildResourceContentLimitInKB; break;
+                        case HeaderNames.CollectionChildResourceNameLimitInBytes: store[i] = array.CollectionChildResourceNameLimitInBytes; break;
+                        case HeaderNames.CollectionPartitionIndex: store[i] = array.CollectionPartitionIndex; break;
+                        case HeaderNames.CollectionRemoteStorageSecurityIdentifier: store[i] = array.CollectionRemoteStorageSecurityIdentifier; break;
+                        case HeaderNames.CollectionRid: store[i] = array.CollectionRid; break;
+                        case HeaderNames.CollectionServiceIndex: store[i] = array.CollectionServiceIndex; break;
+                        case HeaderNames.CollectionTruncate: store[i] = array.CollectionTruncate; break;
+                        case HeaderNames.ConsistencyLevel: store[i] = array.ConsistencyLevel; break;
+                        case HeaderNames.ContentSerializationFormat: store[i] = array.ContentSerializationFormat; break;
+                        case HeaderNames.Continuation: store[i] = array.Continuation; break;
+                        case HeaderNames.CorrelatedActivityId: store[i] = array.CorrelatedActivityId; break;
+                        case HeaderNames.DisableRUPerMinuteUsage: store[i] = array.DisableRUPerMinuteUsage; break;
+                        case HeaderNames.EffectivePartitionKey: store[i] = array.EffectivePartitionKey; break;
+                        case HeaderNames.EmitVerboseTracesInQuery: store[i] = array.EmitVerboseTracesInQuery; break;
+                        case HeaderNames.EnableDynamicRidRangeAllocation: store[i] = array.EnableDynamicRidRangeAllocation; break;
+                        case HeaderNames.EnableLogging: store[i] = array.EnableLogging; break;
+                        case HeaderNames.EnableLowPrecisionOrderBy: store[i] = array.EnableLowPrecisionOrderBy; break;
+                        case HeaderNames.EnableScanInQuery: store[i] = array.EnableScanInQuery; break;
+                        case HeaderNames.EndEpk: store[i] = array.EndEpk; break;
+                        case HeaderNames.EndId: store[i] = array.EndId; break;
+                        case HeaderNames.EntityId: store[i] = array.EntityId; break;
+                        case HeaderNames.EnumerationDirection: store[i] = array.EnumerationDirection; break;
+                        case HeaderNames.ExcludeSystemProperties: store[i] = array.ExcludeSystemProperties; break;
+                        case HeaderNames.FanoutOperationState: store[i] = array.FanoutOperationState; break;
+                        case HeaderNames.FilterBySchemaResourceId: store[i] = array.FilterBySchemaResourceId; break;
+                        case HeaderNames.ForceQueryScan: store[i] = array.ForceQueryScan; break;
+                        case HeaderNames.ForceSideBySideIndexMigration: store[i] = array.ForceSideBySideIndexMigration; break;
+                        case HeaderNames.GatewaySignature: store[i] = array.GatewaySignature; break;
+                        case HeaderNames.GetAllPartitionKeyStatistics: store[i] = array.GetAllPartitionKeyStatistics; break;
+                        case HeaderNames.HttpDate: store[i] = array.HttpDate; break;
+                        case HeaderNames.IfMatch: store[i] = array.IfMatch; break;
+                        case HeaderNames.IfModifiedSince: store[i] = array.IfModifiedSince; break;
+                        case HeaderNames.IfNoneMatch: store[i] = array.IfNoneMatch; break;
+                        case HeaderNames.IgnoreSystemLoweringMaxThroughput: store[i] = array.IgnoreSystemLoweringMaxThroughput; break;
+                        case HeaderNames.IncludePhysicalPartitionThroughputInfo: store[i] = array.IncludePhysicalPartitionThroughputInfo; break;
+                        case HeaderNames.IncludeTentativeWrites: store[i] = array.IncludeTentativeWrites; break;
+                        case HeaderNames.IndexingDirective: store[i] = array.IndexingDirective; break;
+                        case HeaderNames.IntendedCollectionRid: store[i] = array.IntendedCollectionRid; break;
+                        case HeaderNames.IsAutoScaleRequest: store[i] = array.IsAutoScaleRequest; break;
+                        case HeaderNames.IsBatchAtomic: store[i] = array.IsBatchAtomic; break;
+                        case HeaderNames.IsBatchOrdered: store[i] = array.IsBatchOrdered; break;
+                        case HeaderNames.IsClientEncrypted: store[i] = array.IsClientEncrypted; break;
+                        case HeaderNames.IsFanoutRequest: store[i] = array.IsFanoutRequest; break;
+                        case HeaderNames.IsInternalServerlessRequest: store[i] = array.IsInternalServerlessRequest; break;
+                        case HeaderNames.IsMaterializedViewBuild: store[i] = array.IsMaterializedViewBuild; break;
+                        case HeaderNames.IsMaterializedViewSourceSchemaReplaceBatchRequest: store[i] = array.IsMaterializedViewSourceSchemaReplaceBatchRequest; break;
+                        case HeaderNames.IsOfferStorageRefreshRequest: store[i] = array.IsOfferStorageRefreshRequest; break;
+                        case HeaderNames.IsReadOnlyScript: store[i] = array.IsReadOnlyScript; break;
+                        case HeaderNames.IsRetriedWriteRequest: store[i] = array.IsRetriedWriteRequest; break;
+                        case HeaderNames.IsRUPerGBEnforcementRequest: store[i] = array.IsRUPerGBEnforcementRequest; break;
+                        case HeaderNames.IsServerlessStorageRefreshRequest: store[i] = array.IsServerlessStorageRefreshRequest; break;
+                        case HeaderNames.IsThroughputCapRequest: store[i] = array.IsThroughputCapRequest; break;
+                        case HeaderNames.IsUserRequest: store[i] = array.IsUserRequest; break;
+                        case HeaderNames.MaxPollingIntervalMilliseconds: store[i] = array.MaxPollingIntervalMilliseconds; break;
+                        case HeaderNames.MergeCheckPointGLSN: store[i] = array.MergeCheckPointGLSN; break;
+                        case HeaderNames.MergeStaticId: store[i] = array.MergeStaticId; break;
+                        case HeaderNames.MigrateCollectionDirective: store[i] = array.MigrateCollectionDirective; break;
+                        case HeaderNames.MigrateOfferToAutopilot: store[i] = array.MigrateOfferToAutopilot; break;
+                        case HeaderNames.MigrateOfferToManualThroughput: store[i] = array.MigrateOfferToManualThroughput; break;
+                        case HeaderNames.OfferReplaceRURedistribution: store[i] = array.OfferReplaceRURedistribution; break;
+                        case HeaderNames.PageSize: store[i] = array.PageSize; break;
+                        case HeaderNames.PartitionCount: store[i] = array.PartitionCount; break;
+                        case HeaderNames.PartitionKey: store[i] = array.PartitionKey; break;
+                        case HeaderNames.PartitionKeyRangeId: store[i] = array.PartitionKeyRangeId; break;
+                        case HeaderNames.PartitionResourceFilter: store[i] = array.PartitionResourceFilter; break;
+                        case HeaderNames.PopulateAnalyticalMigrationProgress: store[i] = array.PopulateAnalyticalMigrationProgress; break;
+                        case HeaderNames.PopulateByokEncryptionProgress: store[i] = array.PopulateByokEncryptionProgress; break;
+                        case HeaderNames.PopulateCollectionThroughputInfo: store[i] = array.PopulateCollectionThroughputInfo; break;
+                        case HeaderNames.PopulateIndexMetrics: store[i] = array.PopulateIndexMetrics; break;
+                        case HeaderNames.PopulateLogStoreInfo: store[i] = array.PopulateLogStoreInfo; break;
+                        case HeaderNames.PopulateOldestActiveSchema: store[i] = array.PopulateOldestActiveSchema; break;
+                        case HeaderNames.PopulatePartitionStatistics: store[i] = array.PopulatePartitionStatistics; break;
+                        case HeaderNames.PopulateQueryMetrics: store[i] = array.PopulateQueryMetrics; break;
+                        case HeaderNames.PopulateQuotaInfo: store[i] = array.PopulateQuotaInfo; break;
+                        case HeaderNames.PopulateResourceCount: store[i] = array.PopulateResourceCount; break;
+                        case HeaderNames.PopulateUnflushedMergeEntryCount: store[i] = array.PopulateUnflushedMergeEntryCount; break;
+                        case HeaderNames.PopulateUniqueIndexReIndexProgress: store[i] = array.PopulateUniqueIndexReIndexProgress; break;
+                        case HeaderNames.PostTriggerExclude: store[i] = array.PostTriggerExclude; break;
+                        case HeaderNames.PostTriggerInclude: store[i] = array.PostTriggerInclude; break;
+                        case HeaderNames.Prefer: store[i] = array.Prefer; break;
+                        case HeaderNames.PreserveFullContent: store[i] = array.PreserveFullContent; break;
+                        case HeaderNames.PreTriggerExclude: store[i] = array.PreTriggerExclude; break;
+                        case HeaderNames.PreTriggerInclude: store[i] = array.PreTriggerInclude; break;
+                        case HeaderNames.PrimaryMasterKey: store[i] = array.PrimaryMasterKey; break;
+                        case HeaderNames.PrimaryReadonlyKey: store[i] = array.PrimaryReadonlyKey; break;
+                        case HeaderNames.ProfileRequest: store[i] = array.ProfileRequest; break;
+                        case HeaderNames.RbacAction: store[i] = array.RbacAction; break;
+                        case HeaderNames.RbacResource: store[i] = array.RbacResource; break;
+                        case HeaderNames.RbacUserId: store[i] = array.RbacUserId; break;
+                        case HeaderNames.ReadFeedKeyType: store[i] = array.ReadFeedKeyType; break;
+                        case HeaderNames.RemainingTimeInMsOnClientRequest: store[i] = array.RemainingTimeInMsOnClientRequest; break;
+                        case HeaderNames.RemoteStorageType: store[i] = array.RemoteStorageType; break;
+                        case HeaderNames.RequestedCollectionType: store[i] = array.RequestedCollectionType; break;
+                        case HeaderNames.ResourceId: store[i] = array.ResourceId; break;
+                        case HeaderNames.ResourceSchemaName: store[i] = array.ResourceSchemaName; break;
+                        case HeaderNames.ResourceTokenExpiry: store[i] = array.ResourceTokenExpiry; break;
+                        case HeaderNames.ResourceTypes: store[i] = array.ResourceTypes; break;
+                        case HeaderNames.ResponseContinuationTokenLimitInKB: store[i] = array.ResponseContinuationTokenLimitInKB; break;
+                        case HeaderNames.RestoreMetadataFilter: store[i] = array.RestoreMetadataFilter; break;
+                        case HeaderNames.RestoreParams: store[i] = array.RestoreParams; break;
+                        case HeaderNames.RetriableWriteRequestId: store[i] = array.RetriableWriteRequestId; break;
+                        case HeaderNames.RetriableWriteRequestStartTimestamp: store[i] = array.RetriableWriteRequestStartTimestamp; break;
+                        case HeaderNames.SchemaHash: store[i] = array.SchemaHash; break;
+                        case HeaderNames.SchemaId: store[i] = array.SchemaId; break;
+                        case HeaderNames.SchemaOwnerRid: store[i] = array.SchemaOwnerRid; break;
+                        case HeaderNames.SDKSupportedCapabilities: store[i] = array.SDKSupportedCapabilities; break;
+                        case HeaderNames.SecondaryMasterKey: store[i] = array.SecondaryMasterKey; break;
+                        case HeaderNames.SecondaryReadonlyKey: store[i] = array.SecondaryReadonlyKey; break;
+                        case HeaderNames.SessionToken: store[i] = array.SessionToken; break;
+                        case HeaderNames.ShareThroughput: store[i] = array.ShareThroughput; break;
+                        case HeaderNames.ShouldBatchContinueOnError: store[i] = array.ShouldBatchContinueOnError; break;
+                        case HeaderNames.ShouldReturnCurrentServerDateTime: store[i] = array.ShouldReturnCurrentServerDateTime; break;
+                        case HeaderNames.SkipRefreshDatabaseAccountConfigs: store[i] = array.SkipRefreshDatabaseAccountConfigs; break;
+                        case HeaderNames.SourceCollectionIfMatch: store[i] = array.SourceCollectionIfMatch; break;
+                        case HeaderNames.StartEpk: store[i] = array.StartEpk; break;
+                        case HeaderNames.StartId: store[i] = array.StartId; break;
+                        case HeaderNames.SupportSpatialLegacyCoordinates: store[i] = array.SupportSpatialLegacyCoordinates; break;
+                        case HeaderNames.SystemDocumentType: store[i] = array.SystemDocumentType; break;
+                        case HeaderNames.SystemRestoreOperation: store[i] = array.SystemRestoreOperation; break;
+                        case HeaderNames.TargetGlobalCommittedLsn: store[i] = array.TargetGlobalCommittedLsn; break;
+                        case HeaderNames.TargetLsn: store[i] = array.TargetLsn; break;
+                        case HeaderNames.TimeToLiveInSeconds: store[i] = array.TimeToLiveInSeconds; break;
+                        case HeaderNames.TransactionCommit: store[i] = array.TransactionCommit; break;
+                        case HeaderNames.TransactionFirstRequest: store[i] = array.TransactionFirstRequest; break;
+                        case HeaderNames.TransactionId: store[i] = array.TransactionId; break;
+                        case HeaderNames.TransportRequestID: store[i] = array.TransportRequestID; break;
+                        case HeaderNames.TruncateMergeLogRequest: store[i] = array.TruncateMergeLogRequest; break;
+                        case HeaderNames.UniqueIndexNameEncodingMode: store[i] = array.UniqueIndexNameEncodingMode; break;
+                        case HeaderNames.UniqueIndexReIndexingState: store[i] = array.UniqueIndexReIndexingState; break;
+                        case HeaderNames.UpdateMaxThroughputEverProvisioned: store[i] = array.UpdateMaxThroughputEverProvisioned; break;
+                        case HeaderNames.UpdateOfferStateToPending: store[i] = array.UpdateOfferStateToPending; break;
+                        case HeaderNames.UseArchivalPartition: store[i] = array.UseArchivalPartition; break;
+                        case HeaderNames.UsePolygonsSmallerThanAHemisphere: store[i] = array.UsePolygonsSmallerThanAHemisphere; break;
+                        case HeaderNames.UseSystemBudget: store[i] = array.UseSystemBudget; break;
+                        case HeaderNames.UseUserBackgroundBudget: store[i] = array.UseUserBackgroundBudget; break;
+                        case HeaderNames.Version: store[i] = array.Version; break;
+                        case HeaderNames.XDate: store[i] = array.XDate; break;
+                        default: throw new ArgumentException(nameof(name), $"Was {name}");
                     }
                 }
             }

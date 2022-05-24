@@ -1,9 +1,9 @@
 ﻿using BitPackHeaders;
 using System.Diagnostics;
 
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 //IEnumerable<HeaderNames> allHeaders = Enum.GetValues<HeaderNames>();
 //IEnumerable<HeaderNames> allHeadersReversed = allHeaders.Reverse().ToArray();
@@ -15,9 +15,13 @@ using System.Diagnostics;
 //CorrectnessCheck.Fields(allHeadersRandomized);
 //CorrectnessCheck.Fields(allHeadersReversed);
 
-//CorrectnessCheck.Dictionay(allHeaders);
-//CorrectnessCheck.Dictionay(allHeadersRandomized);
-//CorrectnessCheck.Dictionay(allHeadersReversed);
+//CorrectnessCheck.Dictionary(allHeaders);
+//CorrectnessCheck.Dictionary(allHeadersRandomized);
+//CorrectnessCheck.Dictionary(allHeadersReversed);
+
+//CorrectnessCheck.Array(allHeaders);
+//CorrectnessCheck.Array(allHeadersRandomized);
+//CorrectnessCheck.Array(allHeadersReversed);
 
 //CorrectnessCheck.Packed(allHeaders);
 //CorrectnessCheck.Packed(allHeadersRandomized);

@@ -61,9 +61,63 @@ namespace BitPackHeaders
             }
         }
 
-        public static void Dictionay(IEnumerable<HeaderNames> values)
+        public static void Dictionary(IEnumerable<HeaderNames> values)
         {
             DictionaryHeaders obj = new DictionaryHeaders();
+            foreach (HeaderNames name in values)
+            {
+                if (obj.TryGetValue(name, out _))
+                {
+                    throw new Exception("Shouldn't be set");
+                }
+
+                string str = name.ToString() + "_value";
+
+                obj.Set(name, str);
+
+                if (!obj.TryGetValue(name, out string val))
+                {
+                    throw new Exception("Should be set");
+                }
+
+                if (!object.ReferenceEquals(str, val))
+                {
+                    throw new Exception("Unexpected value");
+                }
+
+                string strByName = (string)obj.GetType().GetProperty(name.ToString()).GetValue(obj);
+                if (!object.ReferenceEquals(strByName, val))
+                {
+                    throw new Exception("Unexpected value");
+                }
+            }
+
+            foreach (HeaderNames name in values)
+            {
+                if (!obj.TryGetValue(name, out string val))
+                {
+                    throw new Exception("Should be set");
+                }
+
+                string str = name.ToString() + "_value";
+
+                if (!str.Equals(val))
+                {
+                    throw new Exception("Unexpected value");
+                }
+
+                string strByName = (string)obj.GetType().GetProperty(name.ToString()).GetValue(obj);
+
+                if (!object.ReferenceEquals(strByName, val))
+                {
+                    throw new Exception("Unexpected value");
+                }
+            }
+        }
+
+        public static void Array(IEnumerable<HeaderNames> values)
+        {
+            ArrayHeaders obj = new ArrayHeaders();
             foreach (HeaderNames name in values)
             {
                 if (obj.TryGetValue(name, out _))

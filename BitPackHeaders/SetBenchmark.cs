@@ -73,6 +73,20 @@ namespace BitPackHeaders
         }
 
         [Benchmark]
+        public void Array()
+        {
+            for (int x = 0; x < Iterations; x++)
+            {
+                var dict = new ArrayHeaders();
+                for (var i = 0; i < Headers.Length; i++)
+                {
+                    (HeaderNames Header, string Value) val = this.Headers[i];
+                    dict.Set(val.Header, val.Value);
+                }
+            }
+        }
+
+        [Benchmark]
         public void Packed()
         {
             for (int x = 0; x < Iterations; x++)

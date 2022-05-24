@@ -32,6 +32,7 @@ namespace BitPackHeaders
 
         private DictionaryHeaders dictionary;
         private FieldHeaders fields;
+        private ArrayHeaders array;
         private PackedHeaders packed;
 
         private HeaderNames[] headersToLookup;
@@ -59,12 +60,14 @@ namespace BitPackHeaders
 
             this.dictionary = new DictionaryHeaders();
             this.fields = new FieldHeaders();
+            this.array = new ArrayHeaders();
             this.packed = new PackedHeaders();
             for (var i = 0; i < storedHeaders.Length; i++)
             {
                 (HeaderNames Header, string Value) val = storedHeaders[i];
                 dictionary.Set(val.Header, val.Value);
                 fields.Set(val.Header, val.Value);
+                array.Set(val.Header, val.Value);
                 packed.Set(val.Header, val.Value);
             }
 
@@ -100,6 +103,18 @@ namespace BitPackHeaders
                 for (int i = 0; i < headersToLookup.Length; i++)
                 {
                     this.fields.TryGetValue(this.headersToLookup[i], out _);
+                }
+            }
+        }
+
+        [Benchmark]
+        public void Array()
+        {
+            for (int x = 0; x < Iterations; x++)
+            {
+                for (int i = 0; i < headersToLookup.Length; i++)
+                {
+                    this.array.TryGetValue(this.headersToLookup[i], out _);
                 }
             }
         }
