@@ -6,47 +6,35 @@ using System.Linq;
 namespace BitPackHeaders
 {
     [MemoryDiagnoser]
-    public class GetBenchmark
+    public class KeysBenchmark
     {
         private const int Iterations = 10_000;
 
-        [Params(1, 4, 10, 64, 151)]
-        public int NumHeadersLookedUp { get; set; }
+        [Params(
+            1, 
+            4, 
+            10,
+            20, 
+            40, 
+            80, 
+            151
+        )]
+        public int NumHeaders { get; set; }
 
         //[Params(0, 2022_05_19, 123456789)]
         public int Seed { get; set; }
-
-        [Params(
-            0,
-            5,
-            10,
-            //20, 
-            30,
-            //40, 
-            //50, 
-            60,
-            //70, 
-            //80, 
-            //90, 
-            100)]
-        public int HitRate { get; set; }
 
         private DictionaryHeaders dictionary;
         private FieldHeaders fields;
         private ArrayHeaders array;
         private PackedHeaders packed;
 
-        private HeaderNames[] headersToLookup;
-
         [GlobalSetup]
         public void Init()
         {
             this.Seed = 2022_05_19;
 
-            int neededRealHeaders = (int)(HitRate / 100.0 * NumHeadersLookedUp);
-            int neededMissHeaders = NumHeadersLookedUp - neededRealHeaders;
-
-            (HeaderNames Header, string Value)[] storedHeaders = new (HeaderNames Header, string Value)[neededRealHeaders];
+            (HeaderNames Header, string Value)[] storedHeaders = new (HeaderNames Header, string Value)[this.NumHeaders];
             Random r = new Random(Seed);
 
             List<HeaderNames> allHeaders = Enum.GetValues<HeaderNames>().ToList();
@@ -71,39 +59,52 @@ namespace BitPackHeaders
                 array.Set(val.Header, val.Value);
                 packed.Set(val.Header, val.Value);
             }
-
-            List<HeaderNames> missHeaders = new List<HeaderNames>();
-            for(int i = 0; i < neededMissHeaders; i++)
-            {
-                int nextHeaderIx = r.Next(allHeaders.Count);
-                missHeaders.Add(allHeaders[nextHeaderIx]);
-
-                allHeaders.RemoveAt(nextHeaderIx);
-            }
-
-            headersToLookup = storedHeaders.Select(s => s.Header).Concat(missHeaders).Select(t => (t, r.Next())).OrderBy(t => t.Item2).Select(t => t.t).ToArray();
         }
 
         [Benchmark]
         public void Dictionary()
         {
+            Span<HeaderNames> storeTo = stackalloc HeaderNames[this.NumHeaders];
+
             for (int x = 0; x < Iterations; x++)
             {
-                for(int i = 0; i < headersToLookup.Length; i++)
+                int ix = 0;
+                foreach (HeaderNames header in this.dictionary)
                 {
-                    this.dictionary.TryGetValue(this.headersToLookup[i], out _);
+                    storeTo[ix] = header;
+                    ix++;
                 }
             }
         }
 
         [Benchmark]
-        public void Fields()
+        public void Fields_Switch()
         {
+            Span<HeaderNames> storeTo = stackalloc HeaderNames[this.NumHeaders];
+
             for (int x = 0; x < Iterations; x++)
             {
-                for (int i = 0; i < headersToLookup.Length; i++)
+                int ix = 0;
+                foreach (HeaderNames header in this.fields)
                 {
-                    this.fields.TryGetValue(this.headersToLookup[i], out _);
+                    storeTo[ix] = header;
+                    ix++;
+                }
+            }
+        }
+
+        [Benchmark]
+        public void Fields_Enumerable()
+        {
+            Span<HeaderNames> storeTo = stackalloc HeaderNames[this.NumHeaders];
+
+            for (int x = 0; x < Iterations; x++)
+            {
+                int ix = 0;
+                foreach (HeaderNames header in this.fields.Enumerable())
+                {
+                    storeTo[ix] = header;
+                    ix++;
                 }
             }
         }
@@ -111,11 +112,15 @@ namespace BitPackHeaders
         [Benchmark]
         public void Array()
         {
+            Span<HeaderNames> storeTo = stackalloc HeaderNames[this.NumHeaders];
+
             for (int x = 0; x < Iterations; x++)
             {
-                for (int i = 0; i < headersToLookup.Length; i++)
+                int ix = 0;
+                foreach (HeaderNames header in this.array)
                 {
-                    this.array.TryGetValue(this.headersToLookup[i], out _);
+                    storeTo[ix] = header;
+                    ix++;
                 }
             }
         }
@@ -123,11 +128,15 @@ namespace BitPackHeaders
         [Benchmark]
         public void Packed()
         {
+            Span<HeaderNames> storeTo = stackalloc HeaderNames[this.NumHeaders];
+
             for (int x = 0; x < Iterations; x++)
             {
-                for (int i = 0; i < headersToLookup.Length; i++)
+                int ix = 0;
+                foreach (HeaderNames header in this.packed)
                 {
-                    this.packed.TryGetValue(this.headersToLookup[i], out _);
+                    storeTo[ix] = header;
+                    ix++;
                 }
             }
         }

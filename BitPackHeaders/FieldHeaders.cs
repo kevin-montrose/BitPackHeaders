@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace BitPackHeaders
@@ -477,13 +479,214 @@ namespace BitPackHeaders
             return value != null;
         }
 
+        public KeysEnumerator GetEnumerator()
+        => new KeysEnumerator(this);
+
+        public IEnumerable<HeaderNames> Enumerable()
+        {
+            if (this.A_IM != null) { yield return HeaderNames.A_IM; }
+            if (this.AddResourcePropertiesToResponse != null) { yield return HeaderNames.AddResourcePropertiesToResponse; }
+            if (this.AllowTentativeWrites != null) { yield return HeaderNames.AllowTentativeWrites; }
+            if (this.Authorization != null) { yield return HeaderNames.Authorization; }
+            if (this.BinaryId != null) { yield return HeaderNames.BinaryId; }
+            if (this.BinaryPassthroughRequest != null) { yield return HeaderNames.BinaryPassthroughRequest; }
+            if (this.BindReplicaDirective != null) { yield return HeaderNames.BindReplicaDirective; }
+            if (this.BuilderClientIdentifier != null) { yield return HeaderNames.BuilderClientIdentifier; }
+            if (this.CanCharge != null) { yield return HeaderNames.CanCharge; }
+            if (this.CanOfferReplaceComplete != null) { yield return HeaderNames.CanOfferReplaceComplete; }
+            if (this.CanThrottle != null) { yield return HeaderNames.CanThrottle; }
+            if (this.ChangeFeedStartFullFidelityIfNoneMatch != null) { yield return HeaderNames.ChangeFeedStartFullFidelityIfNoneMatch; }
+            if (this.ChangeFeedWireFormatVersion != null) { yield return HeaderNames.ChangeFeedWireFormatVersion; }
+            if (this.ClientRetryAttemptCount != null) { yield return HeaderNames.ClientRetryAttemptCount; }
+            if (this.CollectionChildResourceContentLimitInKB != null) { yield return HeaderNames.CollectionChildResourceContentLimitInKB; }
+            if (this.CollectionChildResourceNameLimitInBytes != null) { yield return HeaderNames.CollectionChildResourceNameLimitInBytes; }
+            if (this.CollectionPartitionIndex != null) { yield return HeaderNames.CollectionPartitionIndex; }
+            if (this.CollectionRemoteStorageSecurityIdentifier != null) { yield return HeaderNames.CollectionRemoteStorageSecurityIdentifier; }
+            if (this.CollectionRid != null) { yield return HeaderNames.CollectionRid; }
+            if (this.CollectionServiceIndex != null) { yield return HeaderNames.CollectionServiceIndex; }
+            if (this.CollectionTruncate != null) { yield return HeaderNames.CollectionTruncate; }
+            if (this.ConsistencyLevel != null) { yield return HeaderNames.ConsistencyLevel; }
+            if (this.ContentSerializationFormat != null) { yield return HeaderNames.ContentSerializationFormat; }
+            if (this.Continuation != null) { yield return HeaderNames.Continuation; }
+            if (this.CorrelatedActivityId != null) { yield return HeaderNames.CorrelatedActivityId; }
+            if (this.DisableRUPerMinuteUsage != null) { yield return HeaderNames.DisableRUPerMinuteUsage; }
+            if (this.EffectivePartitionKey != null) { yield return HeaderNames.EffectivePartitionKey; }
+            if (this.EmitVerboseTracesInQuery != null) { yield return HeaderNames.EmitVerboseTracesInQuery; }
+            if (this.EnableDynamicRidRangeAllocation != null) { yield return HeaderNames.EnableDynamicRidRangeAllocation; }
+            if (this.EnableLogging != null) { yield return HeaderNames.EnableLogging; }
+            if (this.EnableLowPrecisionOrderBy != null) { yield return HeaderNames.EnableLowPrecisionOrderBy; }
+            if (this.EnableScanInQuery != null) { yield return HeaderNames.EnableScanInQuery; }
+            if (this.EndEpk != null) { yield return HeaderNames.EndEpk; }
+            if (this.EndId != null) { yield return HeaderNames.EndId; }
+            if (this.EntityId != null) { yield return HeaderNames.EntityId; }
+            if (this.EnumerationDirection != null) { yield return HeaderNames.EnumerationDirection; }
+            if (this.ExcludeSystemProperties != null) { yield return HeaderNames.ExcludeSystemProperties; }
+            if (this.FanoutOperationState != null) { yield return HeaderNames.FanoutOperationState; }
+            if (this.FilterBySchemaResourceId != null) { yield return HeaderNames.FilterBySchemaResourceId; }
+            if (this.ForceQueryScan != null) { yield return HeaderNames.ForceQueryScan; }
+            if (this.ForceSideBySideIndexMigration != null) { yield return HeaderNames.ForceSideBySideIndexMigration; }
+            if (this.GatewaySignature != null) { yield return HeaderNames.GatewaySignature; }
+            if (this.GetAllPartitionKeyStatistics != null) { yield return HeaderNames.GetAllPartitionKeyStatistics; }
+            if (this.HttpDate != null) { yield return HeaderNames.HttpDate; }
+            if (this.IfMatch != null) { yield return HeaderNames.IfMatch; }
+            if (this.IfModifiedSince != null) { yield return HeaderNames.IfModifiedSince; }
+            if (this.IfNoneMatch != null) { yield return HeaderNames.IfNoneMatch; }
+            if (this.IgnoreSystemLoweringMaxThroughput != null) { yield return HeaderNames.IgnoreSystemLoweringMaxThroughput; }
+            if (this.IncludePhysicalPartitionThroughputInfo != null) { yield return HeaderNames.IncludePhysicalPartitionThroughputInfo; }
+            if (this.IncludeTentativeWrites != null) { yield return HeaderNames.IncludeTentativeWrites; }
+            if (this.IndexingDirective != null) { yield return HeaderNames.IndexingDirective; }
+            if (this.IntendedCollectionRid != null) { yield return HeaderNames.IntendedCollectionRid; }
+            if (this.IsAutoScaleRequest != null) { yield return HeaderNames.IsAutoScaleRequest; }
+            if (this.IsBatchAtomic != null) { yield return HeaderNames.IsBatchAtomic; }
+            if (this.IsBatchOrdered != null) { yield return HeaderNames.IsBatchOrdered; }
+            if (this.IsClientEncrypted != null) { yield return HeaderNames.IsClientEncrypted; }
+            if (this.IsFanoutRequest != null) { yield return HeaderNames.IsFanoutRequest; }
+            if (this.IsInternalServerlessRequest != null) { yield return HeaderNames.IsInternalServerlessRequest; }
+            if (this.IsMaterializedViewBuild != null) { yield return HeaderNames.IsMaterializedViewBuild; }
+            if (this.IsMaterializedViewSourceSchemaReplaceBatchRequest != null) { yield return HeaderNames.IsMaterializedViewSourceSchemaReplaceBatchRequest; }
+            if (this.IsOfferStorageRefreshRequest != null) { yield return HeaderNames.IsOfferStorageRefreshRequest; }
+            if (this.IsReadOnlyScript != null) { yield return HeaderNames.IsReadOnlyScript; }
+            if (this.IsRetriedWriteRequest != null) { yield return HeaderNames.IsRetriedWriteRequest; }
+            if (this.IsRUPerGBEnforcementRequest != null) { yield return HeaderNames.IsRUPerGBEnforcementRequest; }
+            if (this.IsServerlessStorageRefreshRequest != null) { yield return HeaderNames.IsServerlessStorageRefreshRequest; }
+            if (this.IsThroughputCapRequest != null) { yield return HeaderNames.IsThroughputCapRequest; }
+            if (this.IsUserRequest != null) { yield return HeaderNames.IsUserRequest; }
+            if (this.MaxPollingIntervalMilliseconds != null) { yield return HeaderNames.MaxPollingIntervalMilliseconds; }
+            if (this.MergeCheckPointGLSN != null) { yield return HeaderNames.MergeCheckPointGLSN; }
+            if (this.MergeStaticId != null) { yield return HeaderNames.MergeStaticId; }
+            if (this.MigrateCollectionDirective != null) { yield return HeaderNames.MigrateCollectionDirective; }
+            if (this.MigrateOfferToAutopilot != null) { yield return HeaderNames.MigrateOfferToAutopilot; }
+            if (this.MigrateOfferToManualThroughput != null) { yield return HeaderNames.MigrateOfferToManualThroughput; }
+            if (this.OfferReplaceRURedistribution != null) { yield return HeaderNames.OfferReplaceRURedistribution; }
+            if (this.PageSize != null) { yield return HeaderNames.PageSize; }
+            if (this.PartitionCount != null) { yield return HeaderNames.PartitionCount; }
+            if (this.PartitionKey != null) { yield return HeaderNames.PartitionKey; }
+            if (this.PartitionKeyRangeId != null) { yield return HeaderNames.PartitionKeyRangeId; }
+            if (this.PartitionResourceFilter != null) { yield return HeaderNames.PartitionResourceFilter; }
+            if (this.PopulateAnalyticalMigrationProgress != null) { yield return HeaderNames.PopulateAnalyticalMigrationProgress; }
+            if (this.PopulateByokEncryptionProgress != null) { yield return HeaderNames.PopulateByokEncryptionProgress; }
+            if (this.PopulateCollectionThroughputInfo != null) { yield return HeaderNames.PopulateCollectionThroughputInfo; }
+            if (this.PopulateIndexMetrics != null) { yield return HeaderNames.PopulateIndexMetrics; }
+            if (this.PopulateLogStoreInfo != null) { yield return HeaderNames.PopulateLogStoreInfo; }
+            if (this.PopulateOldestActiveSchema != null) { yield return HeaderNames.PopulateOldestActiveSchema; }
+            if (this.PopulatePartitionStatistics != null) { yield return HeaderNames.PopulatePartitionStatistics; }
+            if (this.PopulateQueryMetrics != null) { yield return HeaderNames.PopulateQueryMetrics; }
+            if (this.PopulateQuotaInfo != null) { yield return HeaderNames.PopulateQuotaInfo; }
+            if (this.PopulateResourceCount != null) { yield return HeaderNames.PopulateResourceCount; }
+            if (this.PopulateUnflushedMergeEntryCount != null) { yield return HeaderNames.PopulateUnflushedMergeEntryCount; }
+            if (this.PopulateUniqueIndexReIndexProgress != null) { yield return HeaderNames.PopulateUniqueIndexReIndexProgress; }
+            if (this.PostTriggerExclude != null) { yield return HeaderNames.PostTriggerExclude; }
+            if (this.PostTriggerInclude != null) { yield return HeaderNames.PostTriggerInclude; }
+            if (this.Prefer != null) { yield return HeaderNames.Prefer; }
+            if (this.PreserveFullContent != null) { yield return HeaderNames.PreserveFullContent; }
+            if (this.PreTriggerExclude != null) { yield return HeaderNames.PreTriggerExclude; }
+            if (this.PreTriggerInclude != null) { yield return HeaderNames.PreTriggerInclude; }
+            if (this.PrimaryMasterKey != null) { yield return HeaderNames.PrimaryMasterKey; }
+            if (this.PrimaryReadonlyKey != null) { yield return HeaderNames.PrimaryReadonlyKey; }
+            if (this.ProfileRequest != null) { yield return HeaderNames.ProfileRequest; }
+            if (this.RbacAction != null) { yield return HeaderNames.RbacAction; }
+            if (this.RbacResource != null) { yield return HeaderNames.RbacResource; }
+            if (this.RbacUserId != null) { yield return HeaderNames.RbacUserId; }
+            if (this.ReadFeedKeyType != null) { yield return HeaderNames.ReadFeedKeyType; }
+            if (this.RemainingTimeInMsOnClientRequest != null) { yield return HeaderNames.RemainingTimeInMsOnClientRequest; }
+            if (this.RemoteStorageType != null) { yield return HeaderNames.RemoteStorageType; }
+            if (this.RequestedCollectionType != null) { yield return HeaderNames.RequestedCollectionType; }
+            if (this.ResourceId != null) { yield return HeaderNames.ResourceId; }
+            if (this.ResourceSchemaName != null) { yield return HeaderNames.ResourceSchemaName; }
+            if (this.ResourceTokenExpiry != null) { yield return HeaderNames.ResourceTokenExpiry; }
+            if (this.ResourceTypes != null) { yield return HeaderNames.ResourceTypes; }
+            if (this.ResponseContinuationTokenLimitInKB != null) { yield return HeaderNames.ResponseContinuationTokenLimitInKB; }
+            if (this.RestoreMetadataFilter != null) { yield return HeaderNames.RestoreMetadataFilter; }
+            if (this.RestoreParams != null) { yield return HeaderNames.RestoreParams; }
+            if (this.RetriableWriteRequestId != null) { yield return HeaderNames.RetriableWriteRequestId; }
+            if (this.RetriableWriteRequestStartTimestamp != null) { yield return HeaderNames.RetriableWriteRequestStartTimestamp; }
+            if (this.SchemaHash != null) { yield return HeaderNames.SchemaHash; }
+            if (this.SchemaId != null) { yield return HeaderNames.SchemaId; }
+            if (this.SchemaOwnerRid != null) { yield return HeaderNames.SchemaOwnerRid; }
+            if (this.SDKSupportedCapabilities != null) { yield return HeaderNames.SDKSupportedCapabilities; }
+            if (this.SecondaryMasterKey != null) { yield return HeaderNames.SecondaryMasterKey; }
+            if (this.SecondaryReadonlyKey != null) { yield return HeaderNames.SecondaryReadonlyKey; }
+            if (this.SessionToken != null) { yield return HeaderNames.SessionToken; }
+            if (this.ShareThroughput != null) { yield return HeaderNames.ShareThroughput; }
+            if (this.ShouldBatchContinueOnError != null) { yield return HeaderNames.ShouldBatchContinueOnError; }
+            if (this.ShouldReturnCurrentServerDateTime != null) { yield return HeaderNames.ShouldReturnCurrentServerDateTime; }
+            if (this.SkipRefreshDatabaseAccountConfigs != null) { yield return HeaderNames.SkipRefreshDatabaseAccountConfigs; }
+            if (this.SourceCollectionIfMatch != null) { yield return HeaderNames.SourceCollectionIfMatch; }
+            if (this.StartEpk != null) { yield return HeaderNames.StartEpk; }
+            if (this.StartId != null) { yield return HeaderNames.StartId; }
+            if (this.SupportSpatialLegacyCoordinates != null) { yield return HeaderNames.SupportSpatialLegacyCoordinates; }
+            if (this.SystemDocumentType != null) { yield return HeaderNames.SystemDocumentType; }
+            if (this.SystemRestoreOperation != null) { yield return HeaderNames.SystemRestoreOperation; }
+            if (this.TargetGlobalCommittedLsn != null) { yield return HeaderNames.TargetGlobalCommittedLsn; }
+            if (this.TargetLsn != null) { yield return HeaderNames.TargetLsn; }
+            if (this.TimeToLiveInSeconds != null) { yield return HeaderNames.TimeToLiveInSeconds; }
+            if (this.TransactionCommit != null) { yield return HeaderNames.TransactionCommit; }
+            if (this.TransactionFirstRequest != null) { yield return HeaderNames.TransactionFirstRequest; }
+            if (this.TransactionId != null) { yield return HeaderNames.TransactionId; }
+            if (this.TransportRequestID != null) { yield return HeaderNames.TransportRequestID; }
+            if (this.TruncateMergeLogRequest != null) { yield return HeaderNames.TruncateMergeLogRequest; }
+            if (this.UniqueIndexNameEncodingMode != null) { yield return HeaderNames.UniqueIndexNameEncodingMode; }
+            if (this.UniqueIndexReIndexingState != null) { yield return HeaderNames.UniqueIndexReIndexingState; }
+            if (this.UpdateMaxThroughputEverProvisioned != null) { yield return HeaderNames.UpdateMaxThroughputEverProvisioned; }
+            if (this.UpdateOfferStateToPending != null) { yield return HeaderNames.UpdateOfferStateToPending; }
+            if (this.UseArchivalPartition != null) { yield return HeaderNames.UseArchivalPartition; }
+            if (this.UsePolygonsSmallerThanAHemisphere != null) { yield return HeaderNames.UsePolygonsSmallerThanAHemisphere; }
+            if (this.UseSystemBudget != null) { yield return HeaderNames.UseSystemBudget; }
+            if (this.UseUserBackgroundBudget != null) { yield return HeaderNames.UseUserBackgroundBudget; }
+            if (this.Version != null) { yield return HeaderNames.Version; }
+            if (this.XDate != null) { yield return HeaderNames.XDate; }
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void AssertNull(string value)
+        private static void AssertNull(string? value)
         {
             if (value != null)
             {
                 throw new InvalidOperationException();
             }
+        }
+
+        internal struct KeysEnumerator: IEnumerator<HeaderNames>
+        {
+            private readonly FieldHeaders headers;
+
+            private HeaderNames nextToCheck;
+
+            public HeaderNames Current { get; private set; }
+
+            object IEnumerator.Current
+            => this.Current;
+
+            internal KeysEnumerator(FieldHeaders headers)
+            {
+                this.headers = headers;
+                this.Current = 0;
+                this.nextToCheck = 0;
+            }
+
+            public bool MoveNext()
+            {
+                while ((int)this.nextToCheck < 151)
+                {
+                    HeaderNames toCheck = this.nextToCheck;
+                    this.nextToCheck++;
+
+                    if(this.headers.TryGetValue(toCheck, out _))
+                    {
+                        this.Current = toCheck;
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
+            public void Reset()
+            {
+                throw new NotImplementedException();
+            }
+
+            public void Dispose() { }
         }
     }
 }

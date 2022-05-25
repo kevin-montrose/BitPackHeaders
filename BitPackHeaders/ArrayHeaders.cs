@@ -1,19 +1,23 @@
-﻿using System;
+﻿using Microsoft.Diagnostics.Tracing.Parsers.FrameworkEventSource;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace BitPackHeaders
 {
     internal class ArrayHeaders
     {
-        private const int IndexSize = 151 + 1;  // 1 extra space to store a null
+        private const int IndexesSize = 151;
 
         private readonly byte[] headerIndexes;
         private readonly List<string?> headerValues;
 
         internal ArrayHeaders()
         {
-            this.headerIndexes = new byte[IndexSize];
+            this.headerIndexes = new byte[IndexesSize];
             this.headerValues = new List<string?>();
             this.headerValues.Add(null);    // store a null so default values short circuit
         }
@@ -186,6 +190,7 @@ namespace BitPackHeaders
             this.headerValues.Add(value);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveOptimization)]
         public bool TryGetValue(HeaderNames name, out string? value)
         {
             int nameAsInt = (int)name;
@@ -195,8 +200,114 @@ namespace BitPackHeaders
             return value != null;
         }
 
+        public Enumerator GetEnumerator()
+        => new Enumerator(this);
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private string? GetOrDefault(HeaderNames name)
         => this.TryGetValue(name, out string? value) ? value : null;
+
+        internal struct Enumerator : IEnumerator<HeaderNames>
+        {
+            private readonly ArrayHeaders headers;
+            private int startIndex;
+
+            public HeaderNames Current { get; private set; }
+
+            object IEnumerator.Current
+            => this.Current;
+
+            internal Enumerator(ArrayHeaders headers)
+            {
+                this.startIndex = 0;
+                this.headers = headers;
+                this.Current = 0;
+            }
+
+            public bool MoveNext()
+            {
+                if (this.startIndex >= ArrayHeaders.IndexesSize)
+                {
+                    return false;
+                }
+
+                int fullLength = ArrayHeaders.IndexesSize - this.startIndex;
+                int remainder = fullLength;
+
+                int longs = remainder / 8;
+               
+               
+                // note: requires LittleEndian, BigEndian inverts some of this
+
+                Span<byte> toSearch = this.headers.headerIndexes.AsSpan().Slice(this.startIndex);
+
+                // go 8 bytes at a time
+                Span<ulong> toSearchLongs = MemoryMarshal.Cast<byte, ulong>(toSearch.Slice(0, longs * 8));
+                for (int i = 0; i < toSearchLongs.Length; i++)
+                {
+                    int count = BitOperations.TrailingZeroCount(toSearchLongs[i]);
+                    if (count != 64)
+                    {
+                        int firstNonZeroByte = count / 8;
+                        int byteOffset = i * 8 + firstNonZeroByte;
+
+                        int currentHeaderOffset = (this.startIndex + byteOffset);
+
+                        this.Current = (HeaderNames)currentHeaderOffset;
+                        this.startIndex = currentHeaderOffset + 1;
+
+                        return true;
+                    }
+                }
+
+                remainder -= longs * 8;
+                int ints = remainder / 4;
+
+                // go 4 bytes at at time
+                Span<uint> toSearchInts = MemoryMarshal.Cast<byte, uint>(toSearch.Slice(longs * 8, ints * 4));
+                for (int i = 0; i < toSearchInts.Length; i++)
+                {
+                    int count = BitOperations.TrailingZeroCount(toSearchInts[i]);
+                    if (count != 32)
+                    {
+                        int firstNonZeroByte = count / 8;
+                        int byteOffset = longs * 8 + i * 4 + firstNonZeroByte;
+
+                        int currentHeaderOffset = (this.startIndex + byteOffset);
+
+                        this.Current = (HeaderNames)currentHeaderOffset;
+                        this.startIndex = currentHeaderOffset + 1;
+
+                        return true;
+                    }
+                }
+
+                remainder -= ints * 4;
+
+                // not bothering with shorts, go 1 byte at a time
+                Span<byte> toSearchBytes = toSearch.Slice(toSearch.Length - remainder);
+                for (int i = 0; i < toSearchBytes.Length; i++)
+                {
+                    if (toSearchBytes[i] != 0)
+                    {
+                        int currentHeaderOffset = this.startIndex + longs * 8 + ints * 4 + i;
+
+                        this.Current = (HeaderNames)currentHeaderOffset;
+                        this.startIndex = currentHeaderOffset + 1;
+
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
+            public void Reset()
+            {
+                throw new NotImplementedException();
+            }
+
+            public void Dispose() { }
+        }
     }
 }

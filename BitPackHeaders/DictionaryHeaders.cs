@@ -172,6 +172,9 @@ namespace BitPackHeaders
         public bool TryGetValue(HeaderNames name, out string? value)
         => this.values.TryGetValue(name, out value);
 
+        public Dictionary<HeaderNames, string>.KeyCollection.Enumerator GetEnumerator()
+        => this.values.Keys.GetEnumerator();
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private string? GetOrDefault(HeaderNames name)
         => this.values.TryGetValue(name, out string? value) ? value : null;

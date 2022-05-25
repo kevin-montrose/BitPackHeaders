@@ -10,7 +10,7 @@ namespace BitPackHeaders
     {
         private const int Iterations = 10_000;
 
-        [Params(1, 4, 10, 64)]
+        [Params(1, 4, 10, 64, 151)]
         public int NumHeadersLookedUp { get; set; }
 
         //[Params(0, 2022_05_19, 123456789)]
@@ -18,6 +18,7 @@ namespace BitPackHeaders
 
         [Params(
             0, 
+            5,
             10, 
             //20, 
             30, 
